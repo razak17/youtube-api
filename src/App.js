@@ -12,8 +12,17 @@ const API_KEY =`${process.env.REACT_APP_API_KEY_YT}`
 
 class App extends React.Component {
 	state = {
-		video: [],
+		videos: [],
 		selectedVideo: null,
+	}
+
+	componentDidMount() {
+		this.handleSubmit('freecodecamp')
+	}
+
+	onVideoSelect = (video) => {
+		this.setState({ selectedVideo: video})
+
 	}
 
 	handleSubmit = async (searchTerm) => {
@@ -27,14 +36,14 @@ class App extends React.Component {
 		
 		});
 
-		this.setState({ videos: response.data.items, selectedVideo: response.data.items[0] });
+		this.setState({ videos: response.data.items, selectedVideo: response.data.items[4] });
 	}
     render () {
-		const { selectedVideo } = this.state;
+		const { selectedVideo, videos } = this.state;
         return (
-            <Grid justify="center" container spacing={10}>
+            <Grid justify="center" container spacing={5}>
 	            <Grid item xs={12}>
-		            <Grid container spacing={10}>
+		            <Grid container spacing={5}>
 			            <Grid item xs={12}>
 			            	<SearchBar onFormSubmit={this.handleSubmit} />
 			            </Grid>
@@ -44,7 +53,9 @@ class App extends React.Component {
 			            </Grid>
 
 		            	<Grid item xs={4}>
-			            	<VideoList />		            	</Grid>
+							<h2>Related Videos</h2>
+			            	<VideoList videos={videos} onVideoSelect={this.onVideoSelect} />
+						</Grid>
 		            </Grid>
 	            </Grid>
             </Grid>
